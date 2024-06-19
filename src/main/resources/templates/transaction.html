@@ -8,203 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
-
-        :root {
-            --body-font: 'Inter', sans-serif;
-            --navbar-font: 'Poppins', sans-serif;
-            --background-color: #A6B2DD;
-            --purple: #4455A2;
-            --light-purple: #ECECF8;
-            --pink: #FCDDEC;
-            --gray: #D9D9D9;
-            --shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.3);
-        }
-
-        body {
-            font-family: var(--body-font);
-            background-color: var(--background-color);
-            margin: 0;
-        }
-
-        .container {
-            display: flex;
-            height: 100vh;
-            width: calc(100% - 100px); /* 50px margin on each side */
-            justify-content: center;
-            align-items: center;
-        }
-
-        .content {
-            flex: 1;
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            height: 700px;
-        }
-
-        .navbar {
-            font-family: var(--navbar-font);
-            display: flex;
-        }
-
-        .logo {
-            margin-right: auto;
-        }
-
-        .logo img {
-            width: 50px;
-            height: 50px;
-        }
-
-        .tab {
-            margin: 0 5px;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            color: black;
-            background-color: white;
-        }
-
-        .tab.active, .tab:hover {
-            background-color: var(--pink);
-        }
-
-        .main-content {
-            display: flex;
-            justify-content: space-between;
-            flex: 1;
-        }
-
-        .sections {
-            display: flex;
-            justify-content: center; /* Center items horizontally */
-            gap: 30px; /* Space between items */
-            width: 100%;
-        }
-
-        .transaction-section {
-            flex: 3;
-            background-color: var(--light-purple);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-        }
-
-        .budget-section {
-            flex: 1;
-            background-color: var(--light-purple);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-        }
-
-        .transaction-header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .transaction-header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .transaction-header {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--purple);
-            background-color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            display: inline-block;
-            box-shadow: var(--shadow);
-        }
-
-        .transaction-controls .btn {
-            padding: 10px 20px;
-            border-radius: 30px;
-            margin-left: 10px; /* Optional: Add spacing between buttons */
-        }
-
-        .budget-header {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--purple);
-            background-color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            display: inline-block;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-
-        .table-container {
-            max-height: 400px;
-            overflow-y: auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-
-        .budget-table-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 15px;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/transaction.css">
 </head>
 <body>
 
@@ -240,7 +44,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- Transactions will be inserted here dynamically -->
+
                             </tbody>
                         </table>
                     </div>
@@ -256,25 +60,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Transportation</td>
-                                <td>RM 650</td>
-                            </tr>
-                            <tr>
-                                <td>Grocery</td>
-                                <td>RM 400</td>
-                            </tr>
-                            <tr>
-                                <td>Beauty</td>
-                                <td>RM 650</td>
-                            </tr>
-                            <tr>
-                                <td>Gifts</td>
-                                <td>RM 400</td>
-                            </tr>
-                            <tr>
-                                <td>Shopping</td>
-                                <td>RM 400</td>
+                            <tr th:each="group : ${groups}">
+                                <td th:text="${group.category}"></td>
+                                <td th:text="'RM ' + ${group.bamount}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -298,11 +86,7 @@
             <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
                 <select class="form-select" id="category" required>
-                    <option value="Transportation">Transportation</option>
-                    <option value="Grocery">Grocery</option>
-                    <option value="Beauty">Beauty</option>
-                    <option value="Gifts">Gifts</option>
-                    <option value="Shopping">Shopping</option>
+                    <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
                 </select>
             </div>
             <div class="mb-3">
@@ -327,118 +111,6 @@
         </form>
     </div>
 </div>
-
-<script>
-    let transactions = [];
-    let currentTransactionId = null;
-    let currentAction = 'add';
-
-    function openModal(action, transactionId = null) {
-        currentAction = action;
-        currentTransactionId = transactionId;
-
-        if (action === 'edit' && transactionId !== null) {
-            const transaction = transactions.find(t => t.id === transactionId);
-            if (transaction) {
-                document.getElementById('transactionId').value = transactionId;
-                document.getElementById('note').value = transaction.note;
-                document.getElementById('category').value = transaction.category;
-                document.getElementById('date').value = transaction.date;
-                document.getElementById('amount').value = transaction.amount;
-                document.getElementById('paymentMethod').value = transaction.paymentMethod;
-            }
-            document.getElementById('deleteButton').style.display = 'inline-block';
-        } else {
-            document.getElementById('transactionForm').reset();
-            document.getElementById('transactionId').value = '';
-            document.getElementById('deleteButton').style.display = 'none';
-        }
-
-        document.getElementById('transactionModal').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('transactionModal').style.display = 'none';
-    }
-
-    document.getElementById('transactionForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const id = document.getElementById('transactionId').value || new Date().getTime().toString();
-        const note = document.getElementById('note').value;
-        const category = document.getElementById('category').value;
-        const date = document.getElementById('date').value;
-        const amount = document.getElementById('amount').value;
-        const paymentMethod = document.getElementById('paymentMethod').value;
-
-        const transaction = { id, note, category, date, amount, paymentMethod };
-
-        if (currentAction === 'edit' && currentTransactionId !== null) {
-            const index = transactions.findIndex(t => t.id === currentTransactionId);
-            if (index !== -1) {
-                transactions[index] = transaction;
-            }
-        } else {
-            transactions.push(transaction);
-        }
-
-        renderTransactions();
-        closeModal();
-    });
-
-    function renderTransactions() {
-        const tbody = document.getElementById('transaction-table').querySelector('tbody');
-        tbody.innerHTML = '';
-        transactions.forEach((transaction, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${transaction.note}</td>
-                <td>${transaction.category}</td>
-                <td>${transaction.date}</td>
-                <td>${transaction.amount}</td>
-                <td>${transaction.paymentMethod}</td>
-            `;
-            tr.addEventListener('click', function () {
-                openModal('edit', transaction.id);
-            });
-            tbody.appendChild(tr);
-        });
-    }
-
-    function deleteTransaction() {
-        if (currentTransactionId !== null) {
-            transactions = transactions.filter(t => t.id !== currentTransactionId);
-            renderTransactions();
-            closeModal();
-        } else {
-            alert('Please select a transaction to delete.');
-        }
-    }
-
-    // ---  Navigation bar functions ---  //
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // Highlight the current tab based on URL
-        let currentUrl = window.location.href;
-        document.querySelectorAll('.tab').forEach(tab => {
-            if (currentUrl.includes(tab.getAttribute('data-url'))) {
-                tab.classList.add('active');
-            } else {
-                tab.classList.remove('active');
-            }
-        });
-    });
-    function navigateToTab(element) {
-
-        // Navigate to tab URL
-        window.location.href = element.getAttribute('data-url');
-    }
-    function navigateToDashboard(element) {
-
-        // Navigate to dashboard
-        window.location.href = element.getAttribute('data-url');
-    }
-
-</script>
+<script src="/js/transaction.js"></script>
 </body>
 </html>

@@ -24,12 +24,9 @@ public class Transaction {
     private Integer amount;
 
 
-//    @Column(name = "category")
-//    private String category;
-
     @ManyToOne
-    @JoinColumn(name = "budget_id")
-    private Budget budget;
+    @JoinColumn(name = "Budget_id")
+    private Group group;
 
     public Transaction() {
     }
@@ -82,13 +79,6 @@ public class Transaction {
         this.amount = amount;
     }
 
-//    public String getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(String category) {
-//        this.category = category;
-//    }
 
     @Override
     public String toString() {

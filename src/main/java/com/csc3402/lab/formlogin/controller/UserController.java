@@ -1,7 +1,11 @@
 package com.csc3402.lab.formlogin.controller;
 
+import com.csc3402.lab.formlogin.model.Group;
+import com.csc3402.lab.formlogin.model.Transaction;
 import com.csc3402.lab.formlogin.model.User;
 import com.csc3402.lab.formlogin.repository.UserRepository;
+import com.csc3402.lab.formlogin.service.GroupService;
+import com.csc3402.lab.formlogin.service.TransactionService;
 import com.csc3402.lab.formlogin.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
@@ -12,16 +16,22 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/user/")
 public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final GroupService groupService;
+    private final TransactionService transactionService;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService, UserRepository userRepository, TransactionService transactionService, GroupService groupService) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.transactionService = transactionService;
+        this.groupService = groupService;
     }
 
     //    ---------     DASHBOARD     ----------     //
@@ -82,9 +92,58 @@ public class UserController {
 
     //    ---------     TRANSACTION     ----------     //
     @GetMapping("/transaction")
-    public String userTransaction() {
+    public String getTransactions(Model model) {
+        List<Group> groups = groupService.listAllGroups();
+        model.addAttribute("groups", groups);
+        List<Transaction> transactions = transactionService.listAllTransaction();
+        model.addAttribute("transactions", transactionService.listAllTransaction());
+        List<String> categories = groupService.getDistinctCategories();
+        model.addAttribute("categories", categories);
         return "transaction";
     }
+
+//    @PostMapping("/transaction")
+//    public String addTransaction(@ModelAttribute Transaction transaction, Model model) {
+//        transactionService.addNewTransaction(transaction);
+//        return "redirect:/transaction";
+//    }
+//
+//    @DeleteMapping("/transaction/{id}")
+//    public String deleteTransaction(@PathVariable Integer id, Model model) {
+//        transactionService.findTransactionById(id).ifPresent(transactionService::deleteTransaction);
+//        return "redirect:/transaction";
+//    }
+
+//    @ResponseBody
+//    @GetMapping("/api/transactions")
+//    public List<Transaction> getAllTransactions() {
+//        return transactionService.listAllTransaction();
+//    }
+//
+//    @ResponseBody
+//    @GetMapping("/api/groups")
+//    public List<Group> getAllGroups() {
+//        return groupService.listAllGroups();
+//    }
+//
+//    @ResponseBody
+//    @PostMapping("/api/transactions")
+//    public Transaction createTransaction(@RequestBody Transaction transaction) {
+//        return transactionService.addNewTransaction(transaction);
+//    }
+//
+//    @ResponseBody
+//    @PutMapping("/api/transactions/{id}")
+//    public Transaction updateTransaction(@PathVariable Integer id, @RequestBody Transaction transaction) {
+//        transaction.setTransactionId(id);
+//        return transactionService.updateTransaction(transaction);
+//    }
+//
+//    @ResponseBody
+//    @DeleteMapping("/api/transactions/{id}")
+//    public void deleteTransaction(@PathVariable Integer id) {
+//        transactionService.findTransactionById(id).ifPresent(transactionService::deleteTransaction);
+//    }
 
 
     //    ---------     BUDGET     ----------     //

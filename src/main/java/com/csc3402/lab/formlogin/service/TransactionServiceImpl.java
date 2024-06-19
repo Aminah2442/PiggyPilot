@@ -5,11 +5,26 @@ import com.csc3402.lab.formlogin.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+
+//    @Autowired
+//    private BudgetRepository budgetRepository;
+//
+//    public Transaction createTransaction(Transaction transaction) {
+//        // Validate that the budget exists
+//        Budget budget = budgetRepository.findById(transaction.getBudget().getBudgetId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Budget not found"));
+//
+//        // Set the transaction's budget to the found budget
+//        transaction.setBudget(budget);
+//
+//        return transactionRepository.save(transaction);
+//    }
 
     public TransactionServiceImpl(TransactionRepository transactionRepository){
         this.transactionRepository = transactionRepository;
@@ -23,5 +38,20 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction addNewTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public Optional<Transaction> findTransactionById(Integer transaction_id) {
+        return transactionRepository.findById(transaction_id);
+    }
+
+    @Override
+    public Transaction updateTransaction(Transaction transaction) {
+        return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public void deleteTransaction(Transaction transaction) {
+        transactionRepository.delete(transaction);
     }
 }
