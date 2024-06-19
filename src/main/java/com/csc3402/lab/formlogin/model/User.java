@@ -2,6 +2,8 @@ package com.csc3402.lab.formlogin.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -27,6 +29,9 @@ public class User {
 
     @Column(name = "total_amount")
     private Integer totamount;
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<Group> groups;
 
     public User(){
     }
