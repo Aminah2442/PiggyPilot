@@ -54,4 +54,9 @@ public class TransactionServiceImpl implements TransactionService {
     public void deleteTransaction(Transaction transaction) {
         transactionRepository.delete(transaction);
     }
+
+    @Override
+    public List<Transaction> listTransactionsByBudgetId(Long budgetId) {
+        return transactionRepository.findByGroupBudgetId(budgetId);
+    }
 }

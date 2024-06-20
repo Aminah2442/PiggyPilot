@@ -12,4 +12,6 @@ public interface TransactionService {
     Optional<Transaction> findTransactionById(Integer transaction_id);
     Transaction updateTransaction(Transaction transaction);
     void deleteTransaction(Transaction transaction);
+
+    List<Transaction> listTransactionsByBudgetId(Long budgetId);
 }

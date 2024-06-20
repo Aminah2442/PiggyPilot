@@ -2,6 +2,8 @@ package com.csc3402.lab.formlogin.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "groups")
 public class Group {
@@ -9,7 +11,7 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Budget_Id")
-    private Integer budgetId;
+    private Long budgetId;
 
     @Column(name = "Category")
     private String category;
@@ -26,6 +28,9 @@ public class Group {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User users;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<Transaction> transaction;
 
 
     @Override
@@ -45,7 +50,7 @@ public class Group {
     }
 
     public void setUser(User user) {
-        this.users = users;
+        this.users = user;
     }
 
     public Group() {}
@@ -58,11 +63,11 @@ public class Group {
         this.users=users;
     }
 
-    public Integer getBudgetId() {
+    public Long getBudgetId() {
         return budgetId;
     }
 
-    public void setBudgetId(Integer budgetId) {
+    public void setBudgetId(Long budgetId) {
         this.budgetId = budgetId;
     }
 

@@ -17,15 +17,19 @@
     <div class="content">
 
         <!--    Alert    -->
-        <div th:if="${param.success}">
+        <div th:if="${param.success1}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Update successful !!!
             </div>
         </div>
-
-        <div th:if="${param.error}">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Update not saved:</strong> An account with this email already exists !!!
+        <div th:if="${param.success2}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Budget successfully deleted !!!
+            </div>
+        </div>
+        <div th:if="${param.success3}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                New Budget created !!!
             </div>
         </div>
 
@@ -279,15 +283,15 @@
         fetchAndDisplayGroups(initialMonth);
 
         document.getElementById('addNewGroupBtn').addEventListener('click', function () {
-            window.location.href = '/group/signup';
+            window.location.href = '/user/budget/add';
         });
 
         document.getElementById('updateGroupBtn').addEventListener('click', function () {
-            window.location.href = '/group/update';
+            window.location.href = '/user/budget/update';
         });
 
         document.getElementById('deleteGroupBtn').addEventListener('click', function () {
-            window.location.href = '/group/delete';
+            window.location.href = '/user/budget/delete';
         });
     });
 

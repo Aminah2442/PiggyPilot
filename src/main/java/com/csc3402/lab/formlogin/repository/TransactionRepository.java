@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-    @Query("SELECT t FROM Transaction t JOIN FETCH t.group")
-    List<Transaction> findAllWithGroup();
+    List<Transaction> findByGroupBudgetId(Long budgetId);
 }

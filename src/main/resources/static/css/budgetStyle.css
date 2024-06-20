@@ -13,7 +13,6 @@
 body {
     font-family: var(--body-font);
     background-color: var(--background-color);
-    /*overflow-y: hidden;*/
 }
 .container {
     display: flex;

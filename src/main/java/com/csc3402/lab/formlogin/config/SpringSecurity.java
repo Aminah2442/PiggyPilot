@@ -27,6 +27,8 @@ public class SpringSecurity {
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/images/*").permitAll() // Allow access to static resources
                         .requestMatchers("/css/*").permitAll()
+                        .requestMatchers("/js/*").permitAll()
+                        .requestMatchers("/vectors/*").permitAll()
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
