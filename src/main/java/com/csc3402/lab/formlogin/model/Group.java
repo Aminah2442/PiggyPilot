@@ -9,7 +9,7 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Budget_Id")
-    private Long budgetId;
+    private Integer budgetId;
 
     @Column(name = "Category")
     private String category;
@@ -58,11 +58,11 @@ public class Group {
         this.users=users;
     }
 
-    public Long getBudgetId() {
+    public Integer getBudgetId() {
         return budgetId;
     }
 
-    public void setBudgetId(Long budgetId) {
+    public void setBudgetId(Integer budgetId) {
         this.budgetId = budgetId;
     }
 
