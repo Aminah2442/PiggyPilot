@@ -13,22 +13,6 @@ function loadTransactions() {
         .catch(error => console.error('Error loading transactions:', error));
 }
 
-// function loadCategories() {
-//     fetch('/api/groups')
-//         .then(response => response.json())
-//         .then(data => {
-//             const categorySelect = document.getElementById('category');
-//             categorySelect.innerHTML = ''; // Clear previous options
-//             data.forEach(group => {
-//                 const option = document.createElement('option');
-//                 option.value = group.budgetId;
-//                 option.text = group.category;
-//                 categorySelect.appendChild(option);
-//             });
-//         })
-//         .catch(error => console.error('Error loading categories:', error));
-// }
-
 function renderTransactions() {
     const tbody = document.getElementById('transaction-table').querySelector('tbody');
     const rows = [];
@@ -82,7 +66,7 @@ function closeModal() {
 }
 
 document.getElementById('transactionForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    // event.preventDefault();
     const id = document.getElementById('transactionId').value || null;
     const note = document.getElementById('note').value;
     const category = document.getElementById('category').value;

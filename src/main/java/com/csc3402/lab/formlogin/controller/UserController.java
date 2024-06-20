@@ -109,13 +109,76 @@ public class UserController {
             List<Transaction> transactions = transactionService.listTransactionsByBudgetId(group.getBudgetId());
             allTransactions.addAll(transactions);
         }
+        Transaction transaction = new Transaction();
+        transaction.setGroup(new Group());
 
         model.addAttribute("groups", groups);
-        model.addAttribute("transactions", allTransactions);
+        model.addAttribute("transactions", allTransactions.isEmpty() ? null : allTransactions);
+        model.addAttribute("transaction", transaction);
 
         Map<Long, Double> budgetLeft = groupService.calculateBudgetLeft(user.getUserId());
-        model.addAttribute("budgetLeft", budgetLeft);
+        model.addAttribute("budgetLeft", budgetLeft.isEmpty() ? null : budgetLeft);
         return "transaction";
+    }
+
+
+    @PostMapping("/transaction")
+    public String addTransaction(@ModelAttribute Transaction transaction) {
+        transactionService.addNewTransaction(transaction);
+        return "redirect:/user/transaction";
+    }
+
+    @DeleteMapping("/transaction/delete/{id}")
+    public String deleteTransactionById(@PathVariable Integer id) {
+        transactionService.findTransactionById(id).ifPresent(transactionService::deleteTransaction);
+        return "redirect:/user/transaction";
+    }
+
+    @PostMapping("/transaction/save")
+    public String saveTransaction(@ModelAttribute("transaction") Transaction transaction, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("groups", groupService.listAllGroups());  // Ensure groups are available if there's an error
+            return "transaction";
+        }
+        transactionService.addNewTransaction(transaction);
+        return "redirect:/user/transaction";
+    }
+
+
+    // API Endpoints for AJAX requests
+    @ResponseBody
+    @GetMapping("/api/transactions")
+    public List<Transaction> getAllTransactions() {
+        String email = getCurrentUserEmail();
+        User user = userRepository.findByEmail(email);
+        List<Transaction> allTransactions = new ArrayList<>();
+        if (user != null) {
+            List<Group> transactionGroup = groupRepository.findByUsers(user);
+            for (Group group : transactionGroup) {
+                List<Transaction> transactions = transactionService.listTransactionsByBudgetId(group.getBudgetId());
+                allTransactions.addAll(transactions);
+            }
+        }
+        return allTransactions;
+    }
+
+    @ResponseBody
+    @PostMapping("/api/transactions")
+    public Transaction createTransaction(@RequestBody Transaction transaction) {
+        return transactionService.addNewTransaction(transaction);
+    }
+
+    @ResponseBody
+    @PutMapping("/api/transactions/{id}")
+    public Transaction updateTransaction(@PathVariable Integer id, @RequestBody Transaction transaction) {
+        transaction.setTransactionId(id);
+        return transactionService.updateTransaction(transaction);
+    }
+
+    @ResponseBody
+    @DeleteMapping("/api/transactions/{id}")
+    public void deleteTransaction(@PathVariable Integer id) {
+        transactionService.findTransactionById(id).ifPresent(transactionService::deleteTransaction);
     }
 
 
