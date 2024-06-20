@@ -44,7 +44,17 @@
                             </tr>
                             </thead>
                             <tbody>
-
+                            <tr th:if="${transactions.isEmpty()}">
+                                <td colspan="6">No Transactions Available</td>
+                            </tr>
+                            <tr th:each="transaction, stat : ${transactions}">
+                                <td th:text="${stat.count}">1</td>
+                                <td th:text="${transaction.note}">Note</td>
+                                <td th:text="${transaction.group.category}">Category</td>
+                                <td th:text="${transaction.date}">Date</td>
+                                <td th:text="${transaction.amount}">Amount</td>
+                                <td th:text="${transaction.paymentMethod}">Payment Method</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -85,8 +95,9 @@
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
-                <select class="form-select" id="category" required>
-                    <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+                <select class="form-select" id="category" th:field="*{groups}" required>
+                    <option value=""> Choose Category... </option>
+                    <option th:each="group : ${groups}" th:value="${group.budgetId}" th:text="${group.category}"></option>
                 </select>
             </div>
             <div class="mb-3">

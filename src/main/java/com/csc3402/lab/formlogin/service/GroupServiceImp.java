@@ -43,8 +43,13 @@ public class GroupServiceImp implements GroupService{
         groupRepository.delete(group);
     }
 
+//    @Override
+//    public List<String> getDistinctCategories() {
+//        return groupRepository.findCategories();
+//    }
+
     @Override
-    public List<String> getDistinctCategories() {
-        return groupRepository.findCategories();
+    public List<Group> listGroupsByUserId(Long userId) {
+        return groupRepository.findByUsersUserId(userId);
     }
 }

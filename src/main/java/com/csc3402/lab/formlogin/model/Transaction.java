@@ -79,6 +79,13 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
     @Override
     public String toString() {

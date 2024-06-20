@@ -11,6 +11,8 @@ public interface GroupService {
     Optional<Group> findGroupbyId(Long budgetId);
     Group updateGroup(Group group);
     void deleteGroup(Group group);
-    public List<String> getDistinctCategories();
+//    public List<String> getDistinctCategories();
+
+    List<Group> listGroupsByUserId(Long userId);
 
 }

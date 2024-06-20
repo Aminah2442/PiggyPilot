@@ -13,27 +13,29 @@ function loadTransactions() {
         .catch(error => console.error('Error loading transactions:', error));
 }
 
-function loadCategories() {
-    fetch('/api/groups')
-        .then(response => response.json())
-        .then(data => {
-            const categorySelect = document.getElementById('category');
-            data.forEach(group => {
-                const option = document.createElement('option');
-                option.value = group.budgetId;
-                option.text = group.category;
-                categorySelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error loading categories:', error));
-}
+// function loadCategories() {
+//     fetch('/api/groups')
+//         .then(response => response.json())
+//         .then(data => {
+//             const categorySelect = document.getElementById('category');
+//             categorySelect.innerHTML = ''; // Clear previous options
+//             data.forEach(group => {
+//                 const option = document.createElement('option');
+//                 option.value = group.budgetId;
+//                 option.text = group.category;
+//                 categorySelect.appendChild(option);
+//             });
+//         })
+//         .catch(error => console.error('Error loading categories:', error));
+// }
 
 function renderTransactions() {
     const tbody = document.getElementById('transaction-table').querySelector('tbody');
-    tbody.innerHTML = '';
+    const rows = [];
+
     transactions.forEach((transaction, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        const row = document.createElement('tr');
+        row.innerHTML = `
             <td>${index + 1}</td>
             <td>${transaction.note}</td>
             <td>${transaction.group.category}</td>
@@ -41,11 +43,14 @@ function renderTransactions() {
             <td>${transaction.amount}</td>
             <td>${transaction.paymentMethod}</td>
         `;
-        tr.addEventListener('click', function() {
+        row.addEventListener('click', function() {
             openModal('edit', transaction.transactionId);
         });
-        tbody.appendChild(tr);
+        rows.push(row);
     });
+
+    tbody.innerHTML = ''; // Clear previous content
+    rows.forEach(row => tbody.appendChild(row));
 }
 
 function openModal(action, transactionId = null) {
@@ -127,8 +132,6 @@ function deleteTransaction() {
 
 // ---  Navigation bar functions ---  //
 document.addEventListener("DOMContentLoaded", function() {
-
-    // Highlight the current tab based on URL
     let currentUrl = window.location.href;
     document.querySelectorAll('.tab').forEach(tab => {
         if (currentUrl.includes(tab.getAttribute('data-url'))) {
@@ -140,15 +143,12 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function navigateToTab(element) {
-    // Navigate to tab URL
     window.location.href = element.getAttribute('data-url');
 }
 
 function navigateToDashboard(element) {
-    // Navigate to dashboard
     window.location.href = element.getAttribute('data-url');
 }
-
 
 document.addEventListener('DOMContentLoaded', function() {
     loadCategories();

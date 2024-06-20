@@ -93,57 +93,19 @@ public class UserController {
     //    ---------     TRANSACTION     ----------     //
     @GetMapping("/transaction")
     public String getTransactions(Model model) {
-        List<Group> groups = groupService.listAllGroups();
+        String email = getCurrentUserEmail();
+        User user = userRepository.findByEmail(email);
+        List<Group> groups = groupService.listGroupsByUserId(user.getUserId());
+//        List<Group> groups = groupService.listAllGroups();
         model.addAttribute("groups", groups);
         List<Transaction> transactions = transactionService.listAllTransaction();
         model.addAttribute("transactions", transactionService.listAllTransaction());
-        List<String> categories = groupService.getDistinctCategories();
-        model.addAttribute("categories", categories);
+//        List<String> categories = groupService.getDistinctCategories();
+//        model.addAttribute("categories", categories);
         return "transaction";
     }
 
-//    @PostMapping("/transaction")
-//    public String addTransaction(@ModelAttribute Transaction transaction, Model model) {
-//        transactionService.addNewTransaction(transaction);
-//        return "redirect:/transaction";
-//    }
-//
-//    @DeleteMapping("/transaction/{id}")
-//    public String deleteTransaction(@PathVariable Integer id, Model model) {
-//        transactionService.findTransactionById(id).ifPresent(transactionService::deleteTransaction);
-//        return "redirect:/transaction";
-//    }
 
-//    @ResponseBody
-//    @GetMapping("/api/transactions")
-//    public List<Transaction> getAllTransactions() {
-//        return transactionService.listAllTransaction();
-//    }
-//
-//    @ResponseBody
-//    @GetMapping("/api/groups")
-//    public List<Group> getAllGroups() {
-//        return groupService.listAllGroups();
-//    }
-//
-//    @ResponseBody
-//    @PostMapping("/api/transactions")
-//    public Transaction createTransaction(@RequestBody Transaction transaction) {
-//        return transactionService.addNewTransaction(transaction);
-//    }
-//
-//    @ResponseBody
-//    @PutMapping("/api/transactions/{id}")
-//    public Transaction updateTransaction(@PathVariable Integer id, @RequestBody Transaction transaction) {
-//        transaction.setTransactionId(id);
-//        return transactionService.updateTransaction(transaction);
-//    }
-//
-//    @ResponseBody
-//    @DeleteMapping("/api/transactions/{id}")
-//    public void deleteTransaction(@PathVariable Integer id) {
-//        transactionService.findTransactionById(id).ifPresent(transactionService::deleteTransaction);
-//    }
 
 
     //    ---------     BUDGET     ----------     //
