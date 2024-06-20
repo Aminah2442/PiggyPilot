@@ -22,9 +22,13 @@ INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Shopping',
 INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Vacation', '2024-02-02', '2024-02-28', 400);
 INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Rent', '2024-01-02', '2024-01-28', 300);
 
+INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Shopping', '2024-02-02', '2024-02-28', 300);
+INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Vacation', '2024-02-02', '2024-02-28', 400);
+INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Rent', '2024-01-02', '2024-01-28', 300);
+
 
 update groups set user_id = 1
-where Budget_Id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+where Budget_Id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 15, 16);
 
 update groups set user_id = 2
 where Budget_Id IN (11, 12, 13);
