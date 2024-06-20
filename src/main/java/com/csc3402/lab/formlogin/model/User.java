@@ -31,7 +31,7 @@ public class User {
     private Integer totamount;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    private Set<Budget> groups;
+    private Set<Group> groups;
 
     public User(){
     }

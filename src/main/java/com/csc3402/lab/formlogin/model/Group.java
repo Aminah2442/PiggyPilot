@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "groups")
-public class Budget {
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +48,9 @@ public class Budget {
         this.users = users;
     }
 
-    public Budget() {}
+    public Group() {}
 
-    public Budget(String category, String startDate, String endDate, double bamount, User users) {
+    public Group(String category, String startDate, String endDate, double bamount, User users) {
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;

@@ -1,6 +1,6 @@
 package com.csc3402.lab.formlogin.controller;
 
-import com.csc3402.lab.formlogin.model.Budget;
+import com.csc3402.lab.formlogin.model.Group;
 import com.csc3402.lab.formlogin.model.User;
 import com.csc3402.lab.formlogin.repository.UserRepository;
 import com.csc3402.lab.formlogin.service.BudgetService;
@@ -90,21 +90,22 @@ public class UserController {
         }
 
         // Get the groups for the current user
-        List<Budget> groups = budgetService.listGroupsByUserId(user.getUserId());
+        List<Group> groups = budgetService.listGroupsByUserId(user.getUserId());
         model.addAttribute("groups", groups);
-        return "budget";
+        model.addAttribute("user", user);
+        return "budget2";
     }
 
     @GetMapping("/budget/category")
     @ResponseBody
-    public List<Budget> getCategoryData(@RequestParam("month") String month) {
+    public List<Group> getCategoryData(@RequestParam("month") String month) {
 
         String email = getCurrentUserEmail();
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return Collections.emptyList();
         }
-        List<Budget> groups = budgetService.listGroupsByUserId(user.getUserId());
+        List<Group> groups = budgetService.listGroupsByUserId(user.getUserId());
 
         // If month is "00", return all groups without filtering
         if ("00".equals(month)) {
@@ -112,7 +113,7 @@ public class UserController {
         }
 
         // Filter groups based on the month
-        List<Budget> filteredGroups = groups.stream()
+        List<Group> filteredGroups = groups.stream()
                 .filter(group -> isMonthInRange(group, month))
                 .collect(Collectors.toList());
 
@@ -126,8 +127,9 @@ public class UserController {
 
 
 
+
     //    ---------     METHODS     ----------     //
-    private boolean isMonthInRange(Budget group, String month) {
+    private boolean isMonthInRange(Group group, String month) {
         try {
             String startDate = group.getStartDate();
             String endDate = group.getEndDate();

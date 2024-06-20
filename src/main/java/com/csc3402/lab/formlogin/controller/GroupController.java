@@ -1,6 +1,6 @@
 package com.csc3402.lab.formlogin.controller;
 
-import com.csc3402.lab.formlogin.model.Budget;
+import com.csc3402.lab.formlogin.model.Group;
 import com.csc3402.lab.formlogin.service.BudgetService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -13,28 +13,27 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/group")
-public class BudgetController {
+public class GroupController {
 
     private final BudgetService budgetService;
 
-    public BudgetController(BudgetService budgetService) {
+    public GroupController(BudgetService budgetService) {
         this.budgetService = budgetService;
     }
 
     @GetMapping("list")
     public String showAllGroups(Model model) {
         model.addAttribute("groups", budgetService.listAllGroups());
-        return "redirect:/user/budget";
+        return "index";
     }
 
     @GetMapping("signup")
-    public String showAddNewGroupForm(Budget group, Model model) {
-        model.addAttribute("group", new Budget());
+    public String showAddNewGroupForm(Group group, Model model) {
         return "add-budget";
     }
 
     @PostMapping("add")
-    public String addGroup(@Valid Budget group, BindingResult result, Model model) {
+    public String addGroup(@Valid Group group, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "add-budget";
         }
@@ -43,8 +42,8 @@ public class BudgetController {
         String month = group.getStartDate().split("-")[1];
 
         // Get the list of groups for the same month
-        List<Budget> allGroups = budgetService.listAllGroups();
-        List<Budget> sameMonthGroups = allGroups.stream()
+        List<Group> allGroups = budgetService.listAllGroups();
+        List<Group> sameMonthGroups = allGroups.stream()
                 .filter(g -> {
                     String groupMonth = g.getStartDate().split("-")[1];
                     return groupMonth.equals(month);
@@ -60,7 +59,7 @@ public class BudgetController {
 
         // Calculate the total budget for that month
         double totalBudget = sameMonthGroups.stream()
-                .mapToDouble(Budget::getBamount)
+                .mapToDouble(Group::getBamount)
                 .sum();
 
         // Check if adding the new group's budget exceeds the limit
@@ -76,10 +75,10 @@ public class BudgetController {
     @GetMapping("update")
     public String showUpdateMainForm(Model model) {
         // Get the list of groups for June (month = 6)
-        List<Budget> allGroups = budgetService.listAllGroups();
+        List<Group> allGroups = budgetService.listAllGroups();
 
         // Filter groups for the month of June (month = 6)
-        List<Budget> juneGroups = allGroups.stream()
+        List<Group> juneGroups = allGroups.stream()
                 .filter(g -> {
                     // Extract month from startDate
                     String groupMonth = g.getStartDate().split("-")[1];
@@ -93,14 +92,14 @@ public class BudgetController {
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
-        Budget group = budgetService.findGroupById(id)
+        Group group = budgetService.findGroupById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id:" + id));
         model.addAttribute("group", group);
         return "update-budget";
     }
 
     @PostMapping("/update/{id}")
-    public String updateGroup(@PathVariable("id") long id, @Valid Budget group, BindingResult result, Model model) {
+    public String updateGroup(@PathVariable("id") long id, @Valid Group group, BindingResult result, Model model) {
         if (result.hasErrors()) {
             group.setBudgetId(id);
             return "update-budget";
@@ -110,8 +109,8 @@ public class BudgetController {
         String month = group.getStartDate().split("-")[1]; // Assuming your date format allows this
 
         // Get the list of groups for the same month (June)
-        List<Budget> allGroups = budgetService.listAllGroups();
-        List<Budget> juneGroups = allGroups.stream()
+        List<Group> allGroups = budgetService.listAllGroups();
+        List<Group> juneGroups = allGroups.stream()
                 .filter(g -> isMonthInRange(g, "6")) // Assuming "6" is June
                 .collect(Collectors.toList());
 
@@ -129,7 +128,7 @@ public class BudgetController {
 
         // Calculate the total budget for June
         double totalBudget = juneGroups.stream()
-                .mapToDouble(Budget::getBamount)
+                .mapToDouble(Group::getBamount)
                 .sum();
 
         // Check if adding the new group's budget exceeds the limit
@@ -146,10 +145,10 @@ public class BudgetController {
     @GetMapping("delete")
     public String showDeleteMainForm(Model model) {
         // Get the list of groups for June (month = 6)
-        List<Budget> allGroups = budgetService.listAllGroups();
+        List<Group> allGroups = budgetService.listAllGroups();
 
         // Filter groups for the month of June (month = 6)
-        List<Budget> juneGroups = allGroups.stream()
+        List<Group> juneGroups = allGroups.stream()
                 .filter(g -> {
                     // Extract month from startDate
                     String groupMonth = g.getStartDate().split("-")[1];
@@ -165,7 +164,7 @@ public class BudgetController {
 
     @GetMapping("delete/{id}")
     public String deleteGroup(@PathVariable("id") long id, Model model) {
-        Budget group = budgetService.findGroupById(id)
+        Group group = budgetService.findGroupById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group Id:" + id));
 
         budgetService.deleteGroup(group);
@@ -174,15 +173,15 @@ public class BudgetController {
 
     @GetMapping("/category")
     @ResponseBody
-    public List<Budget> getCategoryData(@RequestParam("month") String month) {
-        List<Budget> groups = budgetService.listAllGroups();
-        List<Budget> filteredGroups = groups.stream()
+    public List<Group> getCategoryData(@RequestParam("month") String month) {
+        List<Group> groups = budgetService.listAllGroups();
+        List<Group> filteredGroups = groups.stream()
                 .filter(group -> isMonthInRange(group, month))
                 .collect(Collectors.toList());
         return filteredGroups;
     }
 
-    private boolean isMonthInRange(Budget group, String month) {
+    private boolean isMonthInRange(Group group, String month) {
         try {
             String startDate = group.getStartDate();
             String endDate = group.getEndDate();

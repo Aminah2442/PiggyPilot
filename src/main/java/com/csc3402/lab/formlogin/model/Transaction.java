@@ -29,7 +29,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "budget_id")
-    private Budget budget;
+    private Group group;
 
     public Transaction() {
     }

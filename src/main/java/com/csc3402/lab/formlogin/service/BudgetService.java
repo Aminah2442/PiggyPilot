@@ -1,17 +1,17 @@
 package com.csc3402.lab.formlogin.service;
 
 
-import com.csc3402.lab.formlogin.model.Budget;
+import com.csc3402.lab.formlogin.model.Group;
 import java.util.List;
 import java.util.Optional;
 
 public interface BudgetService {
-    List<Budget> listAllGroups();
-    Budget addNewGroup(Budget group);
+    List<Group> listAllGroups();
+    Group addNewGroup(Group group);
 
-    Optional<Budget> findGroupById(Long budgetId);
-    Budget updateGroup(Budget group);
-    void deleteGroup(Budget group);
+    Optional<Group> findGroupById(Long budgetId);
+    Group updateGroup(Group group);
+    void deleteGroup(Group group);
 
-    List<Budget> listGroupsByUserId(Long userId);
+    List<Group> listGroupsByUserId(Long userId);
 }

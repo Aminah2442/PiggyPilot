@@ -1,6 +1,6 @@
 package com.csc3402.lab.formlogin.service;
 
-import com.csc3402.lab.formlogin.model.Budget;
+import com.csc3402.lab.formlogin.model.Group;
 import com.csc3402.lab.formlogin.repository.BudgetRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,33 +18,33 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<Budget> listGroupsByUserId(Long userId) {
+    public List<Group> listGroupsByUserId(Long userId) {
         return budgetRepository.findByUsersUserId(userId);
     }
 
     @Override
-    public List<Budget> listAllGroups() {
+    public List<Group> listAllGroups() {
         return budgetRepository.findAll();
     }
 
     @Override
-    public Budget addNewGroup(Budget group) {
+    public Group addNewGroup(Group group) {
         return budgetRepository.save(group);
     }
 
     @Override
-    public Optional<Budget> findGroupById(Long budgetId) {
+    public Optional<Group> findGroupById(Long budgetId) {
         return budgetRepository.findById(budgetId);
     }
 
 
     @Override
-    public Budget updateGroup(Budget group) {
+    public Group updateGroup(Group group) {
         return budgetRepository.save(group);
     }
 
     @Override
-    public void deleteGroup(Budget group) {
+    public void deleteGroup(Group group) {
         budgetRepository.delete(group);
     }
 
