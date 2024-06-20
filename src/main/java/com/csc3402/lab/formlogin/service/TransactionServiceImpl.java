@@ -1,5 +1,6 @@
 package com.csc3402.lab.formlogin.service;
 
+import com.csc3402.lab.formlogin.model.Group;
 import com.csc3402.lab.formlogin.model.Transaction;
 import com.csc3402.lab.formlogin.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void deleteTransaction(Transaction transaction) {
         transactionRepository.delete(transaction);
+    }
+
+    @Override
+    public List<Transaction> listTransactionsByBudgetId(Long budgetId) {
+        return transactionRepository.findByGroupBudgetId(budgetId);
     }
 }

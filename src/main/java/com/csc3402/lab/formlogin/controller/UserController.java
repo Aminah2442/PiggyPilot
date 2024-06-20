@@ -3,6 +3,7 @@ package com.csc3402.lab.formlogin.controller;
 import com.csc3402.lab.formlogin.model.Group;
 import com.csc3402.lab.formlogin.model.Transaction;
 import com.csc3402.lab.formlogin.model.User;
+import com.csc3402.lab.formlogin.repository.GroupRepository;
 import com.csc3402.lab.formlogin.repository.UserRepository;
 import com.csc3402.lab.formlogin.service.GroupService;
 import com.csc3402.lab.formlogin.service.TransactionService;
@@ -16,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user/")
@@ -27,11 +30,14 @@ public class UserController {
     private final GroupService groupService;
     private final TransactionService transactionService;
 
-    public UserController(UserService userService, UserRepository userRepository, TransactionService transactionService, GroupService groupService) {
+    private final GroupRepository groupRepository;
+
+    public UserController(UserService userService, UserRepository userRepository, TransactionService transactionService, GroupService groupService, GroupRepository groupRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.transactionService = transactionService;
         this.groupService = groupService;
+        this.groupRepository = groupRepository;
     }
 
     //    ---------     DASHBOARD     ----------     //
@@ -96,12 +102,19 @@ public class UserController {
         String email = getCurrentUserEmail();
         User user = userRepository.findByEmail(email);
         List<Group> groups = groupService.listGroupsByUserId(user.getUserId());
-//        List<Group> groups = groupService.listAllGroups();
+        List<Group> transactionGroup = groupRepository.findByUsers(user);
+
+        List<Transaction> allTransactions = new ArrayList<>();
+        for (Group group : transactionGroup) {
+            List<Transaction> transactions = transactionService.listTransactionsByBudgetId(group.getBudgetId());
+            allTransactions.addAll(transactions);
+        }
+
         model.addAttribute("groups", groups);
-        List<Transaction> transactions = transactionService.listAllTransaction();
-        model.addAttribute("transactions", transactionService.listAllTransaction());
-//        List<String> categories = groupService.getDistinctCategories();
-//        model.addAttribute("categories", categories);
+        model.addAttribute("transactions", allTransactions);
+
+        Map<Long, Double> budgetLeft = groupService.calculateBudgetLeft(user.getUserId());
+        model.addAttribute("budgetLeft", budgetLeft);
         return "transaction";
     }
 

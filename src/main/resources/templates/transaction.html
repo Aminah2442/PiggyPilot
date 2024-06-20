@@ -65,14 +65,16 @@
                         <table class="table">
                             <thead>
                             <tr>
+                                <th>BID</th>
                                 <th>Category</th>
                                 <th>Amount</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="group : ${groups}">
+                                <td th:text="${group.budgetId}"></td>
                                 <td th:text="${group.category}"></td>
-                                <td th:text="'RM ' + ${group.bamount}"></td>
+                                <td th:text="'RM ' + ${budgetLeft[group.budgetId]}"></td>
                             </tr>
                             </tbody>
                         </table>

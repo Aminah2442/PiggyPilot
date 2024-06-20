@@ -1,5 +1,6 @@
 package com.csc3402.lab.formlogin.service;
 
+import com.csc3402.lab.formlogin.model.Group;
 import com.csc3402.lab.formlogin.model.Transaction;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface TransactionService {
     Optional<Transaction> findTransactionById(Integer transaction_id);
     Transaction updateTransaction(Transaction transaction);
     void deleteTransaction(Transaction transaction);
+
+    List<Transaction> listTransactionsByBudgetId(Long budgetId);
 }
