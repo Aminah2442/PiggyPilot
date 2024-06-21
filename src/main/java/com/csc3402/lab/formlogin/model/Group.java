@@ -32,6 +32,10 @@ public class Group {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private Set<Transaction> transaction;
 
+    // Transient field for derived attribute
+    @Transient
+    private Double budgetLeft;
+
 
     @Override
     public String toString() {
@@ -101,6 +105,26 @@ public class Group {
 
     public void setBamount(double bamount) {
         this.bamount = bamount;
+    }
+
+
+    public Double getBudgetLeft() {
+        return calculateBudgetLeft();
+    }
+
+    public void setBudgetLeft(Double budgetLeft) {
+        this.budgetLeft = budgetLeft;
+    }
+
+    // Method to calculate budgetLeft
+    private Double calculateBudgetLeft() {
+        if (transaction == null || transaction.isEmpty()) {
+            return bamount;
+        }
+        double totalSpent = transaction.stream()
+                .mapToDouble(Transaction::getAmount)
+                .sum();
+        return bamount - totalSpent;
     }
 
 }

@@ -15,6 +15,6 @@ public interface GroupService {
     Optional<Group> findGroupById(Long budgetId);
     void deleteGroup(Long budgetId);
 
-    Map<Long, Double> calculateBudgetLeft(Long userId);
+//    Map<Long, Double> calculateBudgetLeft(Long userId);
     List<Group> findByUser(User user);
 }

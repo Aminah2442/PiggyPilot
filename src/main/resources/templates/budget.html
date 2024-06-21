@@ -88,7 +88,7 @@
                     <table><!--     Table 1 - Headers      -->
                         <thead>
                         <tr>
-                            <th style="width: 5%;">#</th>
+                            <th style="width: 5%;">ID</th>
                             <th style="width: 18%;">Category</th>
                             <th style="width: 18%;">Start Date</th>
                             <th style="width: 17%;">End Date</th>
@@ -133,13 +133,13 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
     </div>
 </div>
+<!-- Render totamount into a hidden span -->
+<span id="totalAmount" th:text="${user.totamount}" style="display: none;"></span>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -156,7 +156,9 @@
 
         const monthSelect = document.getElementById('monthSelect');
         const actionButtons = document.getElementById('actionButtons');
-        const totalAmount = 1000; // Fixed total amount
+
+        // Use totamount from hidden span
+        const totalAmount = parseFloat(document.getElementById('totalAmount').textContent.trim());
 
         const ctx = document.getElementById('pieChart').getContext('2d');
         let pieChart;
@@ -238,14 +240,14 @@
                         tableBody.appendChild(row);
                     }
                     if (data.length !== 0 || month === '06') {
-                        data.forEach((group, index) => {
+                        data.forEach((group) => {
                             categories.push(group.category);
                             amounts.push(group.bamount);
                             totalCategoryAmount += group.bamount;
 
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                <td style="width: 2%;">${index + 1}</td>
+                                <td style="width: 2%;">${group.budgetId}</td>
                                 <td style="width: 22%;">${group.category}</td>
                                 <td style="width: 22%;">${group.startDate}</td>
                                 <td style="width: 22%;">${group.endDate}</td>

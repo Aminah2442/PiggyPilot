@@ -87,6 +87,9 @@ public class UserController {
     public String getTransactions(Model model) {
         String email = getCurrentUserEmail();
         User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return "redirect:/login?logout"; // Log out if the user is not found
+        }
         List<Group> groups = groupService.listGroupsByUserId(user.getUserId());
         List<Group> transactionGroup = groupRepository.findByUsers(user);
 
@@ -95,12 +98,9 @@ public class UserController {
             List<Transaction> transactions = transactionService.listTransactionsByBudgetId(group.getBudgetId());
             allTransactions.addAll(transactions);
         }
-
         model.addAttribute("groups", groups);
-        model.addAttribute("transactions", allTransactions);
-
-        Map<Long, Double> budgetLeft = groupService.calculateBudgetLeft(user.getUserId());
-        model.addAttribute("budgetLeft", budgetLeft);
+        model.addAttribute("allTransaction", allTransactions);
+        model.addAttribute("transaction", new Transaction());
         return "transaction";
     }
 
@@ -127,10 +127,37 @@ public class UserController {
 
         // Filter groups based on the month
         List<Transaction> filteredTransactions = allTransactions.stream()
-                .filter(transaction -> isMonthInRange(transaction, month))
+                .filter(transactions -> isMonthInRange(transactions, month))
                 .collect(Collectors.toList());
 
         return filteredTransactions;
+    }
+
+    @PostMapping("/transaction/save")
+    public String saveTransaction(@ModelAttribute("transaction") Transaction transaction, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("groups", groupService.listAllGroups());  // Ensure groups are available if there's an error
+            return "transaction";
+        }
+
+        String email = getCurrentUserEmail();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return "redirect:/login?logout";
+        }
+
+        // Retrieve the group for the transaction
+        Group group = groupService.findGroupById(transaction.getGroup().getBudgetId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid group ID"));
+
+        // Check if transaction amount exceeds budget left
+        if (transaction.getAmount() > group.getBudgetLeft()) {
+            return "redirect:/user/transaction?error";
+        }
+
+        transactionService.addNewTransaction(transaction);
+        return "redirect:/user/transaction?success3";
     }
 
 
@@ -218,7 +245,7 @@ public class UserController {
                 .sum();
 
         // Check if adding the new group's budget exceeds the limit
-        if (totalBudget + group.getBamount() <= 1000) {
+        if (totalBudget + group.getBamount() <= user.getTotamount()) {
             if (group.getUser() == null) {
                 group.setUser(user); // Initialize the user if it's null
             } else {
@@ -304,7 +331,7 @@ public class UserController {
                 .sum();
 
         // Check if adding the new group's budget exceeds the limit
-        if (totalBudget + group.getBamount() <= 1000) {
+        if (totalBudget + group.getBamount() <= user.getTotamount()) {
             groupService.updateGroup(id, group, user);
             return "redirect:/user/budget?success1";
         } else {

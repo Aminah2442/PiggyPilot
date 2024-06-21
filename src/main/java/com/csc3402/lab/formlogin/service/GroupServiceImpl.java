@@ -7,6 +7,7 @@ import com.csc3402.lab.formlogin.repository.GroupRepository;
 import com.csc3402.lab.formlogin.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,7 +23,6 @@ public class GroupServiceImpl implements GroupService{
         this.groupRepository = groupRepository;
         this.transactionRepository = transactionRepository;
     }
-
 
     @Override
     public List<Group> listAllGroups() {
@@ -64,26 +64,21 @@ public class GroupServiceImpl implements GroupService{
         groupRepository.deleteById(budgetId);
     }
 
-    @Override
-    public Map<Long, Double> calculateBudgetLeft(Long userId) {
-        List<Group> groups = listGroupsByUserId(userId);
-        List<Transaction> transactions = transactionRepository.findAll();
-
-        Map<Long, Double> budgetLeft = groups.stream()
-                .collect(Collectors.toMap(
-                        Group::getBudgetId,
-                        Group::getBamount
-                ));
-
-        transactions.forEach(transaction -> {
-            Long groupId = transaction.getGroup().getBudgetId();
-            if (budgetLeft.containsKey(groupId)) {
-                budgetLeft.put(groupId, budgetLeft.get(groupId) - transaction.getAmount());
-            }
-        });
-
-        return budgetLeft;
-    }
+//    @Override
+//    public Map<Long, Double> calculateBudgetLeft(Long userId) {
+//        Map<Long, Double> budgetLeft = new HashMap<>();
+//        List<Group> groups = groupRepository.findByUsersUserId(userId);
+//
+//        for (Group group : groups) {
+//            List<Transaction> transactions = transactionRepository.findByGroupBudgetId(group.getBudgetId());
+//            double totalSpent = transactions.stream().mapToDouble(Transaction::getAmount).sum();
+//            double budgetAmount = group.getBamount();
+//            double remainingBudget = budgetAmount - totalSpent;
+//            budgetLeft.put(group.getBudgetId(), remainingBudget);
+//        }
+//
+//        return budgetLeft;
+//    }
 
     @Override
     public List<Group> findByUser(User user) {

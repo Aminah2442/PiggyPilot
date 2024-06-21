@@ -18,8 +18,7 @@ public class Transaction {
     @Column(name = "note")
     private String note;
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private String date; // Changed to String to match the date format in SQL
     @Column(name = "amount")
     private Integer amount;
 
@@ -30,7 +29,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Integer transactionId, String paymentMethod, String note, Date date, Integer amount) {
+    public Transaction(Integer transactionId, String paymentMethod, String note, String date, Integer amount) {
         this.transactionId = transactionId;
         this.paymentMethod = paymentMethod;
         this.note = note;
@@ -62,11 +61,11 @@ public class Transaction {
         this.note = note;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -14,6 +14,17 @@ html, body {
             #354069 100%
     );
 }
+body{
+    overflow: auto;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content {
+    flex: 1;
+}
 .content-grid{
     display: grid;
     grid-template-columns: 50% 50%;
