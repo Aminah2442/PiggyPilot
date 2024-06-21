@@ -224,7 +224,7 @@ public class UserController {
         String month = group.getStartDate().split("-")[1];
 
         // Get the list of groups for the same month
-        List<Group> allGroups = groupService.listAllGroups();
+        List<Group> allGroups = groupService.listGroupsByUserId(user.getUserId());
         List<Group> sameMonthGroups = allGroups.stream()
                 .filter(g -> {
                     String groupMonth = g.getStartDate().split("-")[1];
@@ -308,7 +308,7 @@ public class UserController {
         String month = group.getStartDate().split("-")[1]; // Assuming your date format allows this
 
         // Get the list of groups for the same month (June)
-        List<Group> allGroups = groupService.listAllGroups();
+        List<Group> allGroups = groupService.listGroupsByUserId(user.getUserId());
         List<Group> juneGroups = allGroups.stream()
                 .filter(g -> isMonthInRange(g, "6")) // Assuming "6" is June
                 .collect(Collectors.toList());
@@ -343,8 +343,14 @@ public class UserController {
     @GetMapping("/budget/delete")
     public String showDeleteMainForm(Model model) {
 
+        String email = getCurrentUserEmail();
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return "redirect:/login?logout";
+        }
+
         // Get the list of groups for June (month = 6)
-        List<Group> allGroups = groupService.listAllGroups();
+        List<Group> allGroups = groupService.listGroupsByUserId(user.getUserId());
 
         // Filter groups for the month of June (month = 6)
         List<Group> juneGroups = allGroups.stream()

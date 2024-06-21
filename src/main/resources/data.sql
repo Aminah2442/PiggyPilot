@@ -20,7 +20,7 @@ INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Rent', '02
 INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Rent', '02-04-2024', '28-04-2024', 200);
 
 INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Shopping', '02-02-2024', '28-02-2024', 300);
-INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Vacation', '02-02-2024', '28-02-2024', 400);
+INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Vacation', '02-02-2024', '28-02-2024', 100);
 INSERT INTO groups (Category, Start_date, End_date, BAmount) VALUES ('Rent', '02-01-2024', '28-01-2024', 300);
 
 -- Update user_id in groups table

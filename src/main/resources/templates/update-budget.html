@@ -93,7 +93,7 @@
         <div class="card">
             <div class="main-body">
                 <div class="card-body">
-                    <form action="#" th:action="@{/user/update/{id}(id=${group.budgetId})}" th:object="${group}" th:method="post">
+                    <form action="#" th:action="@{/user/budget/update/{id}(id=${group.budgetId})}" th:object="${group}" th:method="post">
                         <div class="form-group">
                             <label for="budgetId" class="col-form-label">Budget Id</label>
                             <input type="text" th:field="*{budgetId}" class="form-control" id="budgetId"
