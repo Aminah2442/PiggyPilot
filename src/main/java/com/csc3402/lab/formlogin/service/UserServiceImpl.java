@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService{
     public void updateUser(User user) {
         User existingUser = userRepository.findById(user.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
 
+        // Only allow setting totamount if it is currently null
+        if (existingUser.getTotamount() == null) {
+            existingUser.setTotamount(user.getTotamount());
+        }
+
         // Update fields
         existingUser.setFname(user.getFname());
         existingUser.setLname(user.getLname());

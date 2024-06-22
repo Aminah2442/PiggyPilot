@@ -52,12 +52,20 @@
                     <div class="general-info">
                         <p class="box">General Information</p>
                         <div class="info">
-                            <p class="p1">First Name</p>
-                            <p id="firstName" th:text="${user.fname}"></p>
-                            <p class="p1">Last Name</p>
-                            <p id="lastName" th:text="${user.lname}"></p>
+                            <div class="name-container">
+                                <div>
+                                    <p class="p1">First Name</p>
+                                    <p id="firstName" th:text="${user.fname}"></p>
+                                </div>
+                                <div>
+                                    <p class="p1">Last Name</p>
+                                    <p id="lastName" th:text="${user.lname}"></p>
+                                </div>
+                            </div>
                             <p class="p1">Phone Number</p>
                             <p id="phoneNumber" th:text="${user.phone}"></p>
+                            <p class="p1">Total Amount</p>
+                            <p id="totalAmount" th:text="${user.totamount}"></p>
                         </div>
                     </div>
                     <div class="row-grid">
@@ -96,34 +104,40 @@
                         <input type="hidden" th:field="*{userId}" /> <!-- Hidden field for user ID -->
                         <div class="name-container">
                             <div class="form-group">
-                            <label for="editFirstName" class="p1">First Name</label>
-                            <input type="text" id="editFirstName" th:field="*{fname}" class="form-control">
-                            <span th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}" class="text-danger"></span>
-                        </div>
+                                <label for="editFirstName" class="form-label">First Name</label>
+                                <input type="text" id="editFirstName" th:field="*{fname}" class="form-control">
+                                <span th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}" class="text-danger"></span>
+                            </div>
                             <div class="form-group">
-                            <label for="editLastName" class="p1">Last Name</label>
-                            <input type="text" id="editLastName" th:field="*{lname}" class="form-control">
-                            <span th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}" class="text-danger"></span>
-                        </div>
+                                <label for="editLastName" class="form-label">Last Name</label>
+                                <input type="text" id="editLastName" th:field="*{lname}" class="form-control">
+                                <span th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="editPhoneNumber" class="p1">Phone Number</label>
+                            <label for="editPhoneNumber" class="form-label">Phone Number</label>
                             <input type="text" id="editPhoneNumber" th:field="*{phone}" class="form-control">
                             <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="editEmail" class="p1">Email</label>
+                            <label for="editEmail" class="form-label">Email</label>
                             <input type="text" id="editEmail" th:field="*{email}" class="form-control">
                             <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
                             <div class="form-text" id="basic-addon4">Changing this field will require you to re-login.</div>
                         </div>
                         <div class="form-group">
-                            <label for="newPassword" class="p1">New Password</label>
+                            <label for="setTotalAmount" class="form-label">Total Amount</label>
+                            <input type="text" id="setTotalAmount" th:field="*{totamount}" class="form-control" th:disabled="${user.totamount != null}">
+                            <span th:if="${#fields.hasErrors('totamount')}" th:errors="*{totamount}" class="text-danger"></span>
+                            <div class="form-text">This field can only be set once</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">New Password</label>
                             <input type="password" id="newPassword" th:field="*{password}" class="form-control">
                             <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="confirmPassword" class="p1">Confirm Password</label>
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
                             <input type="password" id="confirmPassword" class="form-control">
                         </div>
                     </div>

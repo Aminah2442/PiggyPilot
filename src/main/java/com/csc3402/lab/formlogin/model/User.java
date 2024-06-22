@@ -28,7 +28,7 @@ public class User {
     private Integer phone;
 
     @Column(name = "total_amount")
-    private Integer totamount;
+    private Double totamount;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Set<Group> groups;
@@ -41,7 +41,7 @@ public class User {
         this.email = email;
         this.password = password;
     }
-    public User(String fname, String lname, String email, String password, Integer phone, Integer totamount) {
+    public User(String fname, String lname, String email, String password, Integer phone, Double totamount) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
@@ -96,11 +96,11 @@ public class User {
         this.phone = phone;
     }
 
-    public Integer getTotamount() {
+    public Double getTotamount() {
         return totamount;
     }
 
-    public void setTotamount(Integer totamount) {
+    public void setTotamount(Double totamount) {
         this.totamount = totamount;
     }
 

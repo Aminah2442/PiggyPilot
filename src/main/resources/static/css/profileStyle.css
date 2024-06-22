@@ -81,6 +81,17 @@ body {
 .header{
     padding-bottom: 40px;
 }
+.name-container {
+    display: flex;
+    gap: 15px;
+}
+.name-container div, .name-container .form-group {
+    flex: 1;
+    min-width: calc(50% - 10px);
+}
+.name-container .form-group {
+    gap: 30px;
+}
 .box {
     color: var(--purple);
     background-color: white;
