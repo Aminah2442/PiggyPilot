@@ -10,6 +10,7 @@ import com.csc3402.lab.formlogin.service.TransactionService;
 import com.csc3402.lab.formlogin.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,10 +44,77 @@ public class UserController {
     }
 
     //    ---------     DASHBOARD     ----------     //
+
     @GetMapping("/")
-    public String dashboard() {
+    public String dashboard(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userService.findUserByEmail(userDetails.getUsername());
+        List<Group> userGroups = groupService.findByUser(user);
+
+        // Get all transactions for the user
+        List<Transaction> allTransactions = new ArrayList<>();
+        for (Group group : userGroups) {
+            List<Transaction> transactions = transactionService.listTransactionsByBudgetId(group.getBudgetId());
+            allTransactions.addAll(transactions);
+        }
+
+        // Get the current month
+        String currentMonth = getCurrentMonth();
+
+        // Filter transactions for the current month
+        List<Transaction> currentMonthTransactions = filterTransactionsByMonth(allTransactions, currentMonth);
+
+        // Get the latest transactions for the current month
+        List<Transaction> latestTransactions = getLatestTransactions(currentMonthTransactions, 3);
+
+        // Fetch expenses by category for the current month
+        Map<String, Double> expensesByCategory = currentMonthTransactions.stream()
+                .collect(Collectors.groupingBy(
+                        transaction -> transaction.getGroup().getCategory(), // Assuming Group has getCategory() method
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+
+        // Prepare data for chart.js
+        List<String> categories = new ArrayList<>(expensesByCategory.keySet());
+        List<Double> expenses = new ArrayList<>(expensesByCategory.values());
+
+        // Handle total income
+        double totalIncome = user.getTotamount() != null ? user.getTotamount().doubleValue() : 0.0;
+
+        double totalExpenses = currentMonthTransactions.stream().mapToDouble(Transaction::getAmount).sum();
+        double remainingAmount = totalIncome - totalExpenses;
+
+        model.addAttribute("user", user);
+        model.addAttribute("totalIncome", totalIncome);
+        model.addAttribute("totalExpenses", totalExpenses);
+        model.addAttribute("remainingAmount", remainingAmount);
+        model.addAttribute("transactions", latestTransactions); // Displaying latest transactions for the current month
+        model.addAttribute("categories", categories); // Categories for the chart
+        model.addAttribute("expenses", expenses); // Expenses for the chart
+        model.addAttribute("categoryExpenses", expensesByCategory);
+
         return "dashboard";
     }
+    private List<Transaction> filterTransactionsByMonth(List<Transaction> transactions, String month) {
+        return transactions.stream()
+                .filter(transaction -> isMonthInRange(transaction, month))
+                .collect(Collectors.toList());
+    }
+
+    private List<Transaction> getLatestTransactions(List<Transaction> transactions, int count) {
+        return transactions.stream()
+                .sorted(Comparator.comparing(Transaction::getDate).reversed()) // Sort by date descending
+                .limit(count) // Limit to latest three transactions
+                .collect(Collectors.toList());
+    }
+
+    private String getCurrentMonth() {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM");
+        return currentDate.format(formatter);
+    }
+
+
 
     //    ---------     PROFILE     ----------     //
     @GetMapping("/profile")
@@ -159,8 +227,6 @@ public class UserController {
         transactionService.addNewTransaction(transaction);
         return "redirect:/user/transaction?success3";
     }
-
-
 
     //    ---------     BUDGET     ----------     //
     @GetMapping("/budget")
@@ -363,8 +429,6 @@ public class UserController {
 
         model.addAttribute("groups", juneGroups);
         return "choose-budget-to-delete";
-
-
     }
 
     @GetMapping("/budget/delete/{id}")
@@ -372,7 +436,6 @@ public class UserController {
         groupService.deleteGroup(id);
         return "redirect:/user/budget?success2";
     }
-
 
     //    ---------     METHODS     ----------     //
     private boolean isMonthInRange(Transaction transaction, String month) {
