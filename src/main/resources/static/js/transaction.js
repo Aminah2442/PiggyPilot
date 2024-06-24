@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTransactions();
     loadCategories();
 });
-
+//function for loading the transaction
 function loadTransactions() {
     fetch('/api/transactions')
         .then(response => response.json())

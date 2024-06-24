@@ -8,13 +8,23 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface GroupService {
+    // listing all the categories in the list
     List<Group> listAllGroups();
+
+    //displaying the list based on their user_id
     List<Group> listGroupsByUserId(Long userId);
+
+    //adding new category
     Group addNewGroup(Group group);
+
+    //updating category
     void updateGroup(Long id, Group updatedGroup, User user);
+
+    //finding category based on user id
     Optional<Group> findGroupById(Long budgetId);
+
+    //deleting category
     void deleteGroup(Long budgetId);
 
-//    Map<Long, Double> calculateBudgetLeft(Long userId);
     List<Group> findByUser(User user);
 }

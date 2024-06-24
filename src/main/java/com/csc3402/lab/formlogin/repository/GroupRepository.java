@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
     List<Group> findByUsersUserId(Long userId);
+  // finding budget by user id
     List<Group> findByUsers(User user);
 }
 

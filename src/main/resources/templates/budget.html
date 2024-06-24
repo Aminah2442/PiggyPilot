@@ -12,8 +12,9 @@
     <link rel="stylesheet" th:href="@{/css/budgetStyle.css}"/>
 </head>
 <body>
-
+<!-- container-->
 <div class="container">
+    <!-- inside the container is the content-->
     <div class="content">
 
         <!--    Alert    -->
@@ -162,7 +163,7 @@
 
         const ctx = document.getElementById('pieChart').getContext('2d');
         let pieChart;
-
+        <!-- pie chart-->
         function renderPieChart(categories, percentages) {
             if (pieChart) {
                 pieChart.destroy();

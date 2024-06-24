@@ -23,7 +23,7 @@ public class GroupServiceImpl implements GroupService{
         this.groupRepository = groupRepository;
         this.transactionRepository = transactionRepository;
     }
-
+//overriding the methods present in group service
     @Override
     public List<Group> listAllGroups() {
         return groupRepository.findAll();
@@ -64,21 +64,6 @@ public class GroupServiceImpl implements GroupService{
         groupRepository.deleteById(budgetId);
     }
 
-//    @Override
-//    public Map<Long, Double> calculateBudgetLeft(Long userId) {
-//        Map<Long, Double> budgetLeft = new HashMap<>();
-//        List<Group> groups = groupRepository.findByUsersUserId(userId);
-//
-//        for (Group group : groups) {
-//            List<Transaction> transactions = transactionRepository.findByGroupBudgetId(group.getBudgetId());
-//            double totalSpent = transactions.stream().mapToDouble(Transaction::getAmount).sum();
-//            double budgetAmount = group.getBamount();
-//            double remainingBudget = budgetAmount - totalSpent;
-//            budgetLeft.put(group.getBudgetId(), remainingBudget);
-//        }
-//
-//        return budgetLeft;
-//    }
 
     @Override
     public List<Group> findByUser(User user) {
