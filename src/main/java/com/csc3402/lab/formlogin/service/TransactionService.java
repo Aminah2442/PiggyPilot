@@ -15,5 +15,5 @@ public interface TransactionService {
 
     List<Transaction> listTransactionsByBudgetId(Long budgetId);
 
-
+    void deleteTransactionById(Integer id);
 }

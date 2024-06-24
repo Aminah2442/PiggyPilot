@@ -44,6 +44,9 @@ public class TransactionServiceImpl implements TransactionService {
     public Optional<Transaction> findTransactionById(Integer transaction_id) {
         return transactionRepository.findById(transaction_id);
     }
+    public void deleteTransactionById(Integer id) {
+        transactionRepository.deleteById(id);
+    }
 
     @Override
     public Transaction updateTransaction(Transaction transaction) {

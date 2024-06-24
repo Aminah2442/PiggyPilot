@@ -35,13 +35,13 @@ INSERT INTO transactions (payment_method, note, date, amount, budget_id)
 VALUES ('Cash', 'Dinner with friends', '10-06-2024', 50.00, 2);
 
 INSERT INTO transactions (payment_method, note, date, amount, budget_id)
-VALUES ('Debit', 'Online shopping', '20-06-2024', 149.95, 3);
+VALUES ('Card', 'Online shopping', '20-06-2024', 149.95, 3);
 
 INSERT INTO transactions (payment_method, note, date, amount, budget_id)
 VALUES ('Cash', 'Lunch at work', '05-06-2024', 15.00, 1);
 
 INSERT INTO transactions (payment_method, note, date, amount, budget_id)
-VALUES ('Debit', 'Grocery shopping', '15-01-2024', 75.25, 6);
+VALUES ('Card', 'Grocery shopping', '15-01-2024', 75.25, 6);
 
 INSERT INTO transactions (payment_method, note, date, amount, budget_id)
 VALUES ('Cash', 'Movie night', '25-01-2024', 20.00, 13);

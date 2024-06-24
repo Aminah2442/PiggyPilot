@@ -228,6 +228,26 @@ public class UserController {
         return "redirect:/user/transaction?success3";
     }
 
+    @DeleteMapping("/transaction/delete/{id}")
+    public String deleteTransaction(@PathVariable("id") Integer id) {
+        transactionService.deleteTransactionById(id);
+        return "redirect:/user/transaction?success2";
+    }
+
+    @PostMapping("/transaction/update")
+    public String updateTransaction(@ModelAttribute("transaction") Transaction transaction, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("groups", groupService.listAllGroups());
+            return "transaction";
+        }
+
+        transactionService.updateTransaction(transaction);
+        return "redirect:/user/transaction?success1";
+    }
+
+
+
+
     //    ---------     BUDGET     ----------     //
     @GetMapping("/budget")
     public String userBudget(Model model) {

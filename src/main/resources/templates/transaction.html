@@ -84,14 +84,7 @@
                                 <span><i id="addNewGroupBtn"
                                          class="box btn fa-solid fa-pen-to-square"></i></span>
                             </div>
-                            <div class="box">Update
-                                <span><i id="updateGroupBtn"
-                                         class="box btn fa-solid fa-pen-to-square"></i></span>
-                            </div>
-                            <div class="box">Delete
-                                <span><i id="deleteGroupBtn"
-                                         class="box btn fa-solid fa-pen-to-square"></i></span>
-                            </div>
+
                         </div>
                     </div>
                     <div class="table-container box">
@@ -126,7 +119,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>BID</th>
+
                                 <th>Category</th>
                                 <th>Amount</th>
                             </tr>
@@ -188,6 +181,7 @@
                             <span th:if="${#fields.hasErrors('paymentMethod')}" th:errors="*{paymentMethod}" class="text-danger"></span>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="box btn btn-danger" id="deleteButton" style="display:none;">Delete</button>
                             <button type="submit" class="box btn" id="saveButton">Save</button>
                         </div>
                     </form>
@@ -260,7 +254,6 @@
 
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                            <td>${group.budgetId}</td>
                             <td>${group.category}</td>
                             <td>${group.budgetLeft}</td>
                         `;
@@ -300,6 +293,7 @@
                             if (transactionData.length !== 0 || month === '06') {
                                 transactionData.forEach((transaction, index) => {
                                     const row = document.createElement('tr');
+                                    row.setAttribute('data-id', transaction.transactionId); // Ensure correct transaction ID is set
                                     row.innerHTML = `
                                       <td>${index + 1}</td>
                                       <td>${transaction.note}</td>
@@ -308,6 +302,7 @@
                                       <td>${transaction.amount}</td>
                                       <td>${transaction.paymentMethod}</td>
                                 `;
+                                    row.addEventListener('click', () => openEditModal(transaction));
                                     transactionTableBody.appendChild(row);
                                 });
                             }
@@ -343,15 +338,42 @@
         const addNewGroupBtn = document.getElementById("addNewGroupBtn");// Get the button that opens the modal
         const saveBtn = document.getElementById("saveButton");// Get the save button
 
+        const deleteBtn = document.getElementById("deleteButton"); // Get the delete button
+        const transactionForm = document.getElementById("transactionForm"); // Get the form
+
         // When the user clicks the add button, open the modal
         addNewGroupBtn.addEventListener("click", function () {
-            document.getElementById("transactionForm").reset();
-            modal.style.display = "block";
+            openEditModal(); // Call the function with no arguments to reset the form
         });
 
-        saveBtn.addEventListener("click", function () {
-            document.getElementById("transactionForm").submit(); // Submit the form
+        saveBtn.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default form submission
+            if (saveBtn.textContent === 'Save') {
+                // Handle add new transaction
+                transactionForm.action = "/user/transaction/save";
+            } else {
+                // Handle edit transaction
+                transactionForm.action = "/user/transaction/update";
+            }
+            transactionForm.submit();
         });
+
+
+
+        deleteBtn.addEventListener("click", function () {
+            const transactionId = document.getElementById("transactionId").value;
+            fetch(`/user/transaction/delete/${transactionId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete transaction');
+                    }
+                });
+        });
+
 
         // When the user clicks anywhere outside the modal, close it
         window.addEventListener("click", function (event) {
@@ -361,6 +383,30 @@
         });
 
         // ---- Update Modal
+
+
+        function openEditModal(transaction = null) {
+            if (transaction) {
+                document.getElementById('transactionId').value = transaction.id;
+                document.getElementById('note').value = transaction.note;
+                document.getElementById('category').value = transaction.group.budgetId;
+                document.getElementById('date').value = transaction.date;
+                document.getElementById('amount').value = transaction.amount;
+                document.getElementById('paymentMethod').value = transaction.paymentMethod;
+                saveBtn.textContent = 'Update';
+                deleteBtn.style.display = 'inline-block';
+            } else {
+                document.getElementById('transactionForm').reset();
+                document.getElementById('transactionId').value = '';
+                saveBtn.textContent = 'Save';
+                deleteBtn.style.display = 'none';
+            }
+
+            modal.style.display = 'block';
+        }
+
+
+
 
     });
 
