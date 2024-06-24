@@ -49,7 +49,7 @@ public class User {
         this.phone = phone;
         this.totamount = totamount;
     }
-
+//ameenas part
     public Long getUserId() {
         return userId;
     }
