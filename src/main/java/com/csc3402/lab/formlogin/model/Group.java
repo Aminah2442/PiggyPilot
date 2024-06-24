@@ -11,7 +11,7 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Budget_Id")
     private Long budgetId;
-
+//abcxfwhgsjs
     @Column(name = "Category")
     private String category;
 
