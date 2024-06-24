@@ -358,8 +358,6 @@
             transactionForm.submit();
         });
 
-
-
         deleteBtn.addEventListener("click", function () {
             const transactionId = document.getElementById("transactionId").value;
             fetch(`/user/transaction/delete/${transactionId}`, {
@@ -373,7 +371,6 @@
                     }
                 });
         });
-
 
         // When the user clicks anywhere outside the modal, close it
         window.addEventListener("click", function (event) {

@@ -247,7 +247,6 @@ public class UserController {
 
 
 
-
     //    ---------     BUDGET     ----------     //
     @GetMapping("/budget")
     public String userBudget(Model model) {
