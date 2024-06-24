@@ -40,7 +40,7 @@
         </div>
         <div th:if="${param.error}">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Adding this transaction exceeds the budget amount
+                This transaction amount exceeds the budget amount
             </div>
         </div>
 
@@ -346,8 +346,72 @@
             openEditModal(); // Call the function with no arguments to reset the form
         });
 
+        // saveBtn.addEventListener("click", function (event) {
+        //     event.preventDefault(); // Prevent default form submission
+        //     if (saveBtn.textContent === 'Save') {
+        //         // Handle add new transaction
+        //         transactionForm.action = "/user/transaction/save";
+        //     } else {
+        //         // Handle edit transaction
+        //         transactionForm.action = "/user/transaction/update";
+        //     }
+        //     transactionForm.submit();
+        // });
+        //
+        // deleteBtn.addEventListener("click", function () {
+        //     const transactionId = document.getElementById("transactionId").value;
+        //     fetch(`/user/transaction/delete/${transactionId}`, {
+        //         method: 'DELETE'
+        //     })
+        //         .then(response => {
+        //             if (response.ok) {
+        //                 window.location.reload();
+        //             } else {
+        //                 alert('Failed to delete transaction');
+        //             }
+        //         });
+        // });
+        //
+        // // When the user clicks anywhere outside the modal, close it
+        // window.addEventListener("click", function (event) {
+        //     if (event.target === modal) {
+        //         modal.style.display = "none";
+        //     }
+        // });
+
+        // ---- Update & Delete Modal
+        function openEditModal(transaction = null) {
+            const modalTitle = document.querySelector('.modal-title'); // Select the modal title element
+
+            if (transaction) {
+                // Fill form fields with transaction data for editing
+                document.getElementById('transactionId').value = transaction.transactionId;
+                document.getElementById('note').value = transaction.note;
+                document.getElementById('category').value = transaction.group.budgetId;
+                document.getElementById('date').value = transaction.date;
+                document.getElementById('amount').value = transaction.amount;
+                document.getElementById('paymentMethod').value = transaction.paymentMethod;
+
+                // Change title
+                modalTitle.textContent = 'Edit or Delete Transaction';
+
+                saveBtn.textContent = 'Update';
+                deleteBtn.style.display = 'inline-block';
+            } else {
+                // Clear form fields for adding new transaction
+                transactionForm.reset();
+                document.getElementById('transactionId').value = '';
+
+                // Change title
+                modalTitle.textContent = 'Add Transaction';
+
+                saveBtn.textContent = 'Save';
+                deleteBtn.style.display = 'none';
+            }
+            modal.style.display = 'block';
+        }
+
         saveBtn.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent default form submission
             if (saveBtn.textContent === 'Save') {
                 // Handle add new transaction
                 transactionForm.action = "/user/transaction/save";
@@ -355,56 +419,20 @@
                 // Handle edit transaction
                 transactionForm.action = "/user/transaction/update";
             }
-            transactionForm.submit();
         });
 
         deleteBtn.addEventListener("click", function () {
             const transactionId = document.getElementById("transactionId").value;
-            fetch(`/user/transaction/delete/${transactionId}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        alert('Failed to delete transaction');
-                    }
-                });
+            if (confirm('Are you sure you want to delete this transaction?')) { // Confirmation before performing delete
+                window.location.href = `/user/transaction/delete/${transactionId}`;
+            }
         });
 
-        // When the user clicks anywhere outside the modal, close it
         window.addEventListener("click", function (event) {
             if (event.target === modal) {
                 modal.style.display = "none";
             }
         });
-
-        // ---- Update Modal
-
-
-        function openEditModal(transaction = null) {
-            if (transaction) {
-                document.getElementById('transactionId').value = transaction.id;
-                document.getElementById('note').value = transaction.note;
-                document.getElementById('category').value = transaction.group.budgetId;
-                document.getElementById('date').value = transaction.date;
-                document.getElementById('amount').value = transaction.amount;
-                document.getElementById('paymentMethod').value = transaction.paymentMethod;
-                saveBtn.textContent = 'Update';
-                deleteBtn.style.display = 'inline-block';
-            } else {
-                document.getElementById('transactionForm').reset();
-                document.getElementById('transactionId').value = '';
-                saveBtn.textContent = 'Save';
-                deleteBtn.style.display = 'none';
-            }
-
-            modal.style.display = 'block';
-        }
-
-
-
-
     });
 
     // Initialize date picker

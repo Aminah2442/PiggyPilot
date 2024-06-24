@@ -228,7 +228,7 @@ public class UserController {
         return "redirect:/user/transaction?success3";
     }
 
-    @DeleteMapping("/transaction/delete/{id}")
+    @GetMapping("/transaction/delete/{id}")
     public String deleteTransaction(@PathVariable("id") Integer id) {
         transactionService.deleteTransactionById(id);
         return "redirect:/user/transaction?success2";
@@ -239,6 +239,13 @@ public class UserController {
         if (result.hasErrors()) {
             model.addAttribute("groups", groupService.listAllGroups());
             return "transaction";
+        }
+        Group group = groupService.findGroupById(transaction.getGroup().getBudgetId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid group ID"));
+
+        // Check if transaction amount exceeds budget left
+        if (transaction.getAmount() > group.getBudgetLeft()) {
+            return "redirect:/user/transaction?error";
         }
 
         transactionService.updateTransaction(transaction);
